@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "sweeppea": {
+      "url": "https://mcp.sweeppea.com/",
+      "headers": {
+        "Authorization": "Bearer YOUR_API_KEY",
+        "MCP-Protocol-Version": "2025-11-25"
+      }
+    }
+  }
+}
