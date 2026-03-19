@@ -12,7 +12,7 @@
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
 ![Server Version](https://img.shields.io/badge/Server-v1.14.0-green)
-![Tools](https://img.shields.io/badge/Tools-63-orange)
+![Tools](https://img.shields.io/badge/Tools-56-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -67,7 +67,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (63)
+## Available Tools (56)
 
 ### Account Tools (4)
 
@@ -167,16 +167,6 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `resolve_ticket` | Close/resolve an open support ticket |
 | `update_ticket` | Update an open support ticket. At least one field required |
 | `delete_ticket` | Permanently delete an open support ticket. Cannot be undone |
-
-### Winners Tools (5)
-
-| Tool | Description |
-|------|-------------|
-| `fetch_winners` | Get all winners for a sweepstakes with draw details |
-| `draw_winner` | Draw a random winner from eligible participants |
-| `get_winner` | Get full details for a specific winner by token |
-| `delete_winner` | Remove a winner record from a sweepstakes |
-| `export_winners` | Export winner data for a sweepstakes |
 
 ### Documentation Tools (1)
 
