@@ -12,7 +12,7 @@
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
 ![Server Version](https://img.shields.io/badge/Server-v1.14.0-green)
-![Tools](https://img.shields.io/badge/Tools-63-orange)
+![Tools](https://img.shields.io/badge/Tools-64-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -67,7 +67,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (63)
+## Available Tools (64)
 
 ### Account Tools (4)
 
@@ -98,7 +98,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `unpause_sweepstakes` | Reactivate a paused sweepstakes to allow new entries |
 | `delete_sweepstakes` | Permanently delete a sweepstakes and all associated data |
 
-### Participant Tools (5)
+### Participant Tools (6)
 
 | Tool | Description |
 |------|-------------|
@@ -106,6 +106,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `get_participant` | Fetch a single participant by token, email, or phone number |
 | `fetch_participants` | List participants with pagination (20/page), search, and date filters |
 | `count_participants` | Get participant counts with optional filtering by type and date |
+| `update_bonus_entries` | Update the bonus entries value for a participant in a sweepstakes |
 | `delete_participant` | Permanently remove a participant from a sweepstakes |
 
 ### Group Tools (4)
