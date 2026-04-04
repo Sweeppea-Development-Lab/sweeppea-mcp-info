@@ -12,7 +12,7 @@
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
 ![Server Version](https://img.shields.io/badge/Server-v1.14.0-green)
-![Tools](https://img.shields.io/badge/Tools-64-orange)
+![Tools](https://img.shields.io/badge/Tools-66-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -67,7 +67,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (64)
+## Available Tools (66)
 
 ### Account Tools (4)
 
@@ -178,6 +178,15 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `schedule_drawing` | Schedule a future winner drawing for a sweepstakes |
 | `fetch_scheduled_drawings` | Get all scheduled drawings for a sweepstakes |
 | `delete_scheduled_drawing` | Delete a pending scheduled drawing. Only pending drawings can be deleted |
+
+### To-Do Tools (4)
+
+| Tool | Description |
+|------|-------------|
+| `fetch_todos` | Get all To-Do items with pagination (20 per page), search, and advanced filters |
+| `create_todo` | Create a new internal To-Do item |
+| `update_todo` | Update an existing To-Do item. Supports partial updates |
+| `delete_todo` | Permanently delete a To-Do item. This action cannot be undone |
 
 ### Documentation Tools (1)
 
