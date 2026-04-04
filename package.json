@@ -1,0 +1,19 @@
+{
+  "name": "sweeppea-mcp",
+  "version": "1.14.2",
+  "description": "Official MCP server for sweepstakes management. 66 tools across 15 categories for legally compliant sweepstakes in the US and Canada.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.26.0"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Sweeppea-Development-Lab/sweeppea-mcp-info"
+  },
+  "keywords": ["mcp", "sweepstakes", "marketing", "legal-compliance", "sweeppea"]
+}
