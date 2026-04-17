@@ -11,8 +11,8 @@
 **Model Context Protocol for Sweepstakes Management**
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
-![Server Version](https://img.shields.io/badge/Server-v1.14.4-green)
-![Tools](https://img.shields.io/badge/Tools-66-orange)
+![Server Version](https://img.shields.io/badge/Server-v1.15.2-green)
+![Tools](https://img.shields.io/badge/Tools-70-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -67,7 +67,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (66)
+## Available Tools (70)
 
 ### Account Tools (4)
 
@@ -187,6 +187,15 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `create_todo` | Create a new internal To-Do item |
 | `update_todo` | Update an existing To-Do item. Supports partial updates |
 | `delete_todo` | Permanently delete a To-Do item. This action cannot be undone |
+
+### Files Tools (4)
+
+| Tool | Description |
+|------|-------------|
+| `fetch_files` | List all files in the user's Drive with storage usage, categories, and pagination |
+| `upload_file` | Upload a file to the user's Drive. The file must be base64-encoded |
+| `send_file` | Send a file from the user's Drive as an email attachment |
+| `delete_file` | Permanently delete a file from the user's Drive |
 
 ### Documentation Tools (1)
 

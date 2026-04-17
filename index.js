@@ -6,12 +6,12 @@ const REMOTE_URL = "https://mcp.sweeppea.com/";
 
 const server = new McpServer({
   name: "sweeppea-mcp",
-  version: "1.14.4",
+  version: "1.15.2",
 });
 
 server.tool(
   "sweeppea_connect",
-  "Returns connection details and configuration instructions for the Sweeppea MCP Server. This remote server provides 66 tools across 15 categories for managing legally compliant sweepstakes promotions in the United States and Canada. Use this tool to obtain the endpoint URL, required authentication headers, and platform-specific setup guides for Claude Desktop, Cursor, Windsurf, and other MCP clients. Requires an active Sweeppea subscription and API key from sweeppea.com.",
+  "Returns connection details and configuration instructions for the Sweeppea MCP Server. This remote server provides 70 tools across 16 categories for managing legally compliant sweepstakes promotions in the United States and Canada. Use this tool to obtain the endpoint URL, required authentication headers, and platform-specific setup guides for Claude Desktop, Cursor, Windsurf, and other MCP clients. Requires an active Sweeppea subscription and API key from sweeppea.com.",
   {
     platform: {
       type: "string",
@@ -82,10 +82,10 @@ server.tool(
             "Auth:            Bearer <SWEEPPEA_API_KEY>",
             "Protocol:        MCP 2025-11-25",
             "",
-            "66 tools across 15 categories:",
+            "70 tools across 16 categories:",
             "Account, Sweepstakes, Participants, Entry Page, Groups,",
             "Notes, Calendar, Rules, Billing, Support, Winners,",
-            "Documentation, Utilities, To-Do, Testing",
+            "Documentation, Utilities, To-Do, Files, Testing",
             "",
             "Get your API key: https://www.sweeppea.com/",
             "Documentation:    https://mcpdocs.sweeppea.com/",
