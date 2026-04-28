@@ -11,8 +11,8 @@
 **Model Context Protocol for Sweepstakes Management**
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
-![Server Version](https://img.shields.io/badge/Server-v1.15.2-green)
-![Tools](https://img.shields.io/badge/Tools-70-orange)
+![Server Version](https://img.shields.io/badge/Server-v1.15.3-green)
+![Tools](https://img.shields.io/badge/Tools-71-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -67,7 +67,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (70)
+## Available Tools (71)
 
 ### Account Tools (4)
 
@@ -188,12 +188,13 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `update_todo` | Update an existing To-Do item. Supports partial updates |
 | `delete_todo` | Permanently delete a To-Do item. This action cannot be undone |
 
-### Files Tools (4)
+### Files Tools (5)
 
 | Tool | Description |
 |------|-------------|
 | `fetch_files` | List all files in the user's Drive with storage usage, categories, and pagination |
 | `upload_file` | Upload a file to the user's Drive. The file must be base64-encoded |
+| `get_file_url` | Generate a short-lived presigned S3 URL to download or preview a file from the user's Drive |
 | `send_file` | Send a file from the user's Drive as an email attachment |
 | `delete_file` | Permanently delete a file from the user's Drive |
 
