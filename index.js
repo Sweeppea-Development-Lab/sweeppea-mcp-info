@@ -6,7 +6,7 @@ const REMOTE_URL = "https://mcp.sweeppea.com/";
 
 const server = new McpServer({
   name: "sweeppea-mcp",
-  version: "1.15.3",
+  version: "1.17.0",
 });
 
 server.tool(
