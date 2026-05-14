@@ -52,6 +52,30 @@ Sweeppea handles that complexity for you and much more. The platform generates l
 
 ---
 
+## Server-side Validations
+
+The server enforces business and legal rules **before** a tool executes. If a call violates a rule, the tool is rejected and never reaches the Sweeppea API — no resources are created.
+
+Two layers run on every `tools/call`:
+
+- **Hardcoded legal guardrails (inviolable):** illegal lottery without AMOE, COPPA (minimum age below 13), and alcohol age gate.
+- **Dynamic declarative rules (editable by Sweeppea):** additional checks on `create_sweepstakes`, `update_entry_settings`, `create_rules_wizard`, `create_note`, `create_ticket`, and `add_participant`.
+
+A rejection returns a structured payload so your AI assistant can recover:
+
+```json
+{
+  "blocked_by": "server_validation",
+  "error_code": "ALCOHOL_AGE_GATE_REQUIRED",
+  "error_message": "Alcohol-related sweepstakes require an age gate of 21+.",
+  "rule_id": "age_gate_must_be_21_when_active_v1"
+}
+```
+
+`rule_id` is only present for dynamic rules. The AI assistant can read these fields and adjust the arguments before retrying.
+
+---
+
 ## Quick Start
 
 Using **Claude Code CLI**:
