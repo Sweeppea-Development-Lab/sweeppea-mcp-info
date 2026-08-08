@@ -11,8 +11,8 @@
 **Model Context Protocol for Sweepstakes Management**
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
-![Server Version](https://img.shields.io/badge/Server-v1.17.0-green)
-![Tools](https://img.shields.io/badge/Tools-71-orange)
+![Server Version](https://img.shields.io/badge/Server-v1.18.0-green)
+![Tools](https://img.shields.io/badge/Tools-83-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -91,7 +91,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (71)
+## Available Tools (83)
 
 ### Account Tools (4)
 
@@ -126,7 +126,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 | Tool | Description |
 |------|-------------|
-| `add_participant` | Add a new participant to a sweepstakes with custom fields |
+| `add_participant` | Add a new participant to a sweepstakes with custom fields. Both email and phone are required |
 | `get_participant` | Fetch a single participant by token, email, or phone number |
 | `fetch_participants` | List participants with pagination (20/page), search, and date filters |
 | `count_participants` | Get participant counts with optional filtering by type and date |
@@ -221,6 +221,32 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `get_file_url` | Generate a short-lived presigned S3 URL to download or preview a file from the user's Drive |
 | `send_file` | Send a file from the user's Drive as an email attachment |
 | `delete_file` | Permanently delete a file from the user's Drive |
+
+### Invoice Tools (5)
+
+> Requires the **Invoices module** enabled on the account — disabled by default. The API returns `403 "module is not enabled"` until Sweeppea activates it; contact support to request access.
+
+| Tool | Description |
+|------|-------------|
+| `create_invoice` | Create an invoice. Subtotal, tax and total are computed server-side ($1–$1,000,000, max 60 line items) |
+| `fetch_invoices` | List invoices with pagination and filters by status and date range |
+| `get_invoice` | Get full invoice detail: line items, payment info, public link, QR code, stats and event timeline |
+| `update_invoice` | Update an invoice. State machine draft → pending → paid; paid and cancelled are immutable |
+| `delete_invoice` | Permanently delete an invoice. Cannot be undone — use status `cancelled` to keep it as history |
+
+### Survey Tools (7)
+
+> Requires the **Surveys module** enabled on the account — disabled by default. The API returns `403 "module is not enabled"` until Sweeppea activates it; contact support to request access.
+
+| Tool | Description |
+|------|-------------|
+| `create_survey` | Create a survey attached to a sweepstakes, optionally with its full question set |
+| `fetch_surveys` | List surveys with pagination, filtered by sweepstakes, enabled state or archived state |
+| `get_survey` | Get full survey detail including its complete question set, sorted by page then order |
+| `update_survey` | Update a survey. The question set is a full replacement and locks once responses exist |
+| `delete_survey` | Permanently delete a survey, its questions, responses, stats and files. Cannot be undone |
+| `fetch_survey_responses` | Get individual responses with each answer. Device/IP metadata is PII and off by default |
+| `fetch_survey_report` | Get the aggregated report: totals, completion rate, device breakdown, timeline, distributions |
 
 ### Documentation Tools (1)
 

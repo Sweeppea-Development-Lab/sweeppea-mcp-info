@@ -1,0 +1,31 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.sweeppea-development-lab/sweeppea-mcp",
+  "title": "Sweeppea MCP Server",
+  "description": "Sweeppea sweepstakes management. 83 tools for legally compliant sweepstakes in US/Canada.",
+  "repository": {
+    "url": "https://github.com/Sweeppea-Development-Lab/sweeppea-mcp-info",
+    "source": "github"
+  },
+  "version": "1.18.0",
+  "remotes": [
+    {
+      "type": "streamable-http",
+      "url": "https://mcp.sweeppea.com/",
+      "headers": [
+        {
+          "name": "Authorization",
+          "description": "Bearer token with your Sweeppea API key (format: Bearer YOUR_API_KEY)",
+          "isRequired": true,
+          "isSecret": true
+        },
+        {
+          "name": "MCP-Protocol-Version",
+          "description": "MCP protocol version (use 2025-11-25)",
+          "isRequired": true,
+          "isSecret": false
+        }
+      ]
+    }
+  ]
+}
