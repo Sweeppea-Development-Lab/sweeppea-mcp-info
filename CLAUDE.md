@@ -83,11 +83,25 @@ Category counts in the README must sum to the headline number, and the category 
 
 ## Release flow
 
-Commits go on a branch (`feat/…`, `fix/…`, `docs/…`), never straight to `main`. After the push, always cut the GitHub release — the repo tracks versions as tags (`v1.15.3`, `v1.17.0`) plus a `gh release`:
+Commits go on a branch (`feat/…`, `fix/…`, `docs/…`), never straight to `main`. A release is **three separate artifacts** — cutting one does not cut the others, and skipping the third is how `server.json` drifted five versions:
 
 ```bash
+# 1. tag — immutable anchor
 git tag v1.X.Y && git push origin v1.X.Y
+
+# 2. GitHub release — this is what Glama reads to regenerate Quality/Security scores
 gh release create v1.X.Y --title "v1.X.Y — <short summary>" --notes "..."
+
+# 3. official MCP registry — reads server.json, NOT the release
+mcp-publisher validate && mcp-publisher publish
+```
+
+`mcp-publisher login github` is an interactive device flow — ask the user to run it with `!`. Token storage lives in `~/.config/mcp-publisher/`; the `.mcpregistry_*` files in the repo root are stale leftovers from an older CLI version and are no longer read.
+
+Verify the third step actually landed instead of assuming it did:
+
+```bash
+curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=sweeppea"
 ```
 
 ## Never invent tools or behavior
