@@ -224,8 +224,6 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ### Invoice Tools (5)
 
-> Requires the **Invoices module** enabled on the account — disabled by default. The API returns `403 "module is not enabled"` until Sweeppea activates it; contact support to request access.
-
 | Tool | Description |
 |------|-------------|
 | `create_invoice` | Create an invoice. Subtotal, tax and total are computed server-side ($1–$1,000,000, max 60 line items) |
@@ -235,8 +233,6 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `delete_invoice` | Permanently delete an invoice. Cannot be undone — use status `cancelled` to keep it as history |
 
 ### Survey Tools (7)
-
-> Requires the **Surveys module** enabled on the account — disabled by default. The API returns `403 "module is not enabled"` until Sweeppea activates it; contact support to request access.
 
 | Tool | Description |
 |------|-------------|
