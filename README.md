@@ -11,8 +11,8 @@
 **Model Context Protocol for Sweepstakes Management**
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
-![Server Version](https://img.shields.io/badge/Server-v1.18.0-green)
-![Tools](https://img.shields.io/badge/Tools-83-orange)
+![Server Version](https://img.shields.io/badge/Server-v1.22.0-green)
+![Tools](https://img.shields.io/badge/Tools-109-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -58,7 +58,7 @@ The server enforces business and legal rules **before** a tool executes. If a ca
 
 Two layers run on every `tools/call`:
 
-- **Hardcoded legal guardrails (inviolable):** illegal lottery without AMOE, COPPA (minimum age below 13), and alcohol age gate.
+- **Hardcoded legal guardrails (inviolable):** illegal lottery without AMOE, COPPA (minimum age below 13), alcohol 21+ age gate, nicotine 21+ age gate and state exclusions, no nicotine products as prizes, and explicit confirmation for promotions aimed at minors.
 - **Dynamic declarative rules (editable by Sweeppea):** additional checks on `create_sweepstakes`, `update_entry_settings`, `create_rules_wizard`, `create_note`, `create_ticket`, and `add_participant`.
 
 A rejection returns a structured payload so your AI assistant can recover:
@@ -73,6 +73,8 @@ A rejection returns a structured payload so your AI assistant can recover:
 ```
 
 `rule_id` is only present for dynamic rules. The AI assistant can read these fields and adjust the arguments before retrying.
+
+Irreversible tools — every `delete_*`, plus `send_message`, `send_code`, `cancel_campaign`, `remove_suppression` and `unassign_code` — require `confirm: true` and are rejected without it.
 
 ---
 
@@ -91,7 +93,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (83)
+## Available Tools (109)
 
 ### Account Tools (4)
 
@@ -114,7 +116,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 | Tool | Description |
 |------|-------------|
-| `fetch_sweepstakes` | Get all sweepstakes associated with your account |
+| `fetch_sweepstakes` | List sweepstakes with pagination. Returns a summary with a computed lifecycle state (scheduled, running, ended) |
 | `create_sweepstakes` | Create a new sweepstakes with type, handler, dates, and times |
 | `update_sweepstakes` | Update an existing sweepstakes (name, dates, times) |
 | `clone_sweepstakes` | Clone an existing sweepstakes with new parameters and dates |
@@ -188,7 +190,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `fetch_open_tickets` | Get open tickets with pagination, search, platform and priority filters |
 | `fetch_closed_tickets` | Get closed tickets with pagination, search, platform and priority filters |
 | `get_ticket` | Get full ticket details by case number including notes and files |
-| `create_ticket` | Create a new support ticket with title, description, and priority |
+| `create_ticket` | Create a new support ticket with title, description, priority, assignee and platform |
 | `resolve_ticket` | Close/resolve an open support ticket |
 | `update_ticket` | Update an open support ticket. At least one field required |
 | `delete_ticket` | Permanently delete an open support ticket. Cannot be undone |
@@ -247,6 +249,50 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `delete_survey` | Permanently delete a survey, its questions, responses, stats and files. Cannot be undone |
 | `fetch_survey_responses` | Get individual responses with each answer. Device/IP metadata is PII and off by default |
 | `fetch_survey_report` | Get the aggregated report: totals, completion rate, device breakdown, timeline, distributions |
+
+### Codes & Coupons Tools (14)
+
+> Writes require the **Codes & Coupons module** enabled on the account — they return `403 "module not enabled"` otherwise. The four reads (`fetch_code_stats`, `fetch_codes`, `get_code`, `get_code_settings`) do not document that 403; if one of them answers 403, the cause is something else.
+
+| Tool | Description |
+|------|-------------|
+| `fetch_code_stats` | Count the codes of a sweepstakes by status |
+| `fetch_codes` | List codes with the participant each one is assigned to. Server-side filters, search and sorting |
+| `get_code` | Get one code by token, or by the code itself plus the sweepstakes token (point of sale) |
+| `create_codes` | Import 1–1,000 codes you already have. Reports Created, Duplicates and Invalid separately |
+| `generate_codes` | Generate up to 5,000 random codes with optional prefix, suffix, value and expiration |
+| `update_code` | Partially update one code. `null` clears a field; the code itself can only be renamed while unassigned |
+| `delete_codes` | Permanently delete up to 1,000 codes. Assigned, redeemed and voided codes are skipped. Requires `confirm: true` |
+| `assign_code` | Assign an available code to a participant of the same sweepstakes. Does not notify anyone |
+| `unassign_code` | Take a code back from a participant, clearing its redemption too. Requires `confirm: true` |
+| `redeem_code` | Redeem a code by token, or by the code itself at the point of sale. Reversible |
+| `unredeem_code` | Undo a redemption while keeping the assignment |
+| `get_code_settings` | Get how the entry and AMOE pages hand out codes |
+| `update_code_settings` | Configure code registration modes, generation and delivery for entry and AMOE pages |
+| `send_code` | Send a code to the participant holding it by email and/or SMS. Cannot be recalled. Requires `confirm: true` |
+
+### Messaging Tools (12)
+
+> Writes require the **Send Message module** enabled on the account — they return `403 "module not enabled"` otherwise. The six reads do not document that 403.
+>
+> Direct sending (`send_message`, `send_code`) is a separate switch from the module: an account with the module enabled can still get 403 until Sweeppea support enables direct messages. `fetch_messaging_usage` reports both, plus plan channels, allowance, sending pauses and 10DLC readiness.
+>
+> Campaigns cannot be created through the API — they are created in the Sweeppea app. These tools read, pause, resume and cancel them.
+
+| Tool | Description |
+|------|-------------|
+| `fetch_messaging_usage` | Get messaging access, plan channels, allowance, sending pauses and 10DLC status |
+| `fetch_campaigns` | List campaigns with filters by sweepstakes, channel, category, status and name |
+| `get_campaign` | Get campaign content, audience, sender profile, counters and the actions its status allows |
+| `fetch_campaign_report` | Get the campaign report. Rates are computed over messages sent, not over the audience |
+| `fetch_campaign_recipients` | List recipients with delivery status, filtered by status or one exact address |
+| `pause_campaign` | Pause a queued or sending campaign. Messages already handed to the carrier still go out |
+| `resume_campaign` | Resume a paused campaign after re-checking everything that would stop it again |
+| `cancel_campaign` | Cancel a campaign permanently. Cannot be resumed. Requires `confirm: true` |
+| `fetch_suppressions` | List suppressed addresses: unsubscribes, STOP replies, complaints, bounces and manual entries |
+| `add_suppressions` | Suppress up to 500 email addresses or phone numbers. Never downgrades an existing opt-out |
+| `remove_suppression` | Remove a manually added suppression. Opt-outs, STOP replies and complaints are never removable. Requires `confirm: true` |
+| `send_message` | Send a plain-text message by email and/or SMS to a participant of your account. Cannot be recalled. Requires `confirm: true` |
 
 ### Documentation Tools (1)
 

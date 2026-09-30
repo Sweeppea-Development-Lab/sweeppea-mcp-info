@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This is the **public info / distribution manifest** for the Sweeppea MCP Server — not the server itself.
 
-The real server is **remote and hosted**: `https://mcp.sweeppea.com/` (Streamable HTTP, Bearer auth, MCP protocol `2025-11-25`). Its 83 tools proxy the Sweeppea API v3 and its implementation lives in a **different repository** (`renaissance-mcp`, sibling directory `../renaissance-mcp`). Nothing you change here alters the behavior of those 83 tools.
+The real server is **remote and hosted**: `https://mcp.sweeppea.com/` (Streamable HTTP, Bearer auth, MCP protocol `2025-11-25`). Its 109 tools proxy the Sweeppea API v3 and its implementation lives in a **different repository** (`renaissance-mcp`, sibling directory `../renaissance-mcp`). Nothing you change here alters the behavior of those 109 tools.
 
 To resync after an upstream release, read `../renaissance-mcp/CHANGELOG.md` and `package.json` for the version and counts, then diff the tool names instead of trusting the changelog prose:
 
@@ -57,7 +57,7 @@ Version and tool count are duplicated across files with no single source. A rele
 | File | What to update |
 |---|---|
 | `package.json` | `version`, and the tool count in `description` |
-| `index.js` | `new McpServer({ version })`, the tool count inside the `sweeppea_connect` **description string**, and the `"83 tools across 18 categories:"` + category list in the returned text |
+| `index.js` | `new McpServer({ version })`, the tool count inside the `sweeppea_connect` **description string**, and the `"109 tools across 20 categories:"` + category list in the returned text |
 | `README.md` | `Server-v1.X.Y` and `Tools-NN` badges, the `## Available Tools (NN)` heading, every `### Category (N)` count, and the tool table rows |
 | `server.json` | `version` and `description` tool count |
 
@@ -66,13 +66,13 @@ Version and tool count are duplicated across files with no single source. A rele
 Then run the grep gate with the *previous* values and fix anything it returns:
 
 ```bash
-OLD_VER=1.18.0; OLD_COUNT=83
+OLD_VER=1.22.0; OLD_COUNT=109
 grep -rnE "v?${OLD_VER}|${OLD_COUNT} tools" \
   --include='*.md' --include='*.json' --include='*.js' \
   --exclude-dir=node_modules --exclude-dir=.git .
 ```
 
-Category counts in the README must sum to the headline number, and the category list in `index.js` must match the README's `###` sections (currently 18).
+Category counts in the README must sum to the headline number, and the category list in `index.js` must match the README's `###` sections (currently 20).
 
 `server.json` is untracked, so it silently misses releases — it sat at `1.14.0` / `63 tools` for four versions. Check it explicitly on every bump.
 
