@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
+import { z } from "zod";
 
 const REMOTE_URL = "https://mcp.sweeppea.com/";
 
@@ -13,11 +14,10 @@ server.tool(
   "sweeppea_connect",
   "Returns connection details and configuration instructions for the Sweeppea MCP Server. This remote server provides 83 tools across 18 categories for managing legally compliant sweepstakes promotions in the United States and Canada. Use this tool to obtain the endpoint URL, required authentication headers, and platform-specific setup guides for Claude Desktop, Cursor, Windsurf, and other MCP clients. Requires an active Sweeppea subscription and API key from sweeppea.com.",
   {
-    platform: {
-      type: "string",
-      description: "Target MCP client platform for configuration instructions. Supported: claude-desktop, claude-code, cursor, windsurf, generic.",
-      enum: ["claude-desktop", "claude-code", "cursor", "windsurf", "generic"],
-    },
+    platform: z
+      .enum(["claude-desktop", "claude-code", "cursor", "windsurf", "generic"])
+      .optional()
+      .describe("Target MCP client platform for configuration instructions. Supported: claude-desktop, claude-code, cursor, windsurf, generic."),
   },
   async ({ platform = "generic" }) => {
     const configs = {

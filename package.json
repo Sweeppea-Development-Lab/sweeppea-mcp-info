@@ -8,12 +8,19 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@modelcontextprotocol/sdk": "^1.26.0"
+    "@modelcontextprotocol/sdk": "^1.26.0",
+    "zod": "^4.6.5"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/Sweeppea-Development-Lab/sweeppea-mcp-info"
   },
-  "keywords": ["mcp", "sweepstakes", "marketing", "legal-compliance", "sweeppea"]
+  "keywords": [
+    "mcp",
+    "sweepstakes",
+    "marketing",
+    "legal-compliance",
+    "sweeppea"
+  ]
 }

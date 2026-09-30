@@ -46,14 +46,9 @@ printf '%s\n' \
   | node index.js
 ```
 
-### Known defect in `index.js`
+### Tool schemas in `index.js`
 
-The `platform` argument is passed to `server.tool()` as a raw JSON-Schema-ish object instead of a Zod raw shape. Verified consequences:
-
-- With SDK `1.26.0`: the server starts, but the object is parsed as **tool annotations** — `tools/list` reports `inputSchema: {"type":"object","properties":{}}`, so `platform` is invisible to clients and always falls back to `generic`.
-- With SDK `1.30.0` (what `^1.26.0` resolves to on a fresh install): startup **throws** `Tool sweeppea_connect expected a Zod schema or ToolAnnotations`.
-
-Fix by importing `zod` and declaring `{ platform: z.enum([...]).optional() }` before touching anything else in `index.js`.
+Declare tool arguments as a Zod raw shape (`{ platform: z.enum([...]).optional() }`), never as a JSON-Schema object. With SDK `1.26.0` a raw object was silently parsed as tool **annotations** (`platform` vanished from `inputSchema`); from SDK `1.30.0` on, startup throws `Tool sweeppea_connect expected a Zod schema or ToolAnnotations`. `zod` is a direct dependency for this reason.
 
 ## Version / count sync (mandatory before any commit)
 
