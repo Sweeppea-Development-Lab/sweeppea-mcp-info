@@ -2,12 +2,12 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.sweeppea-development-lab/sweeppea-mcp",
   "title": "Sweeppea MCP Server",
-  "description": "Sweeppea sweepstakes management. 83 tools for legally compliant sweepstakes in US/Canada.",
+  "description": "Sweeppea sweepstakes management. 109 tools for legally compliant sweepstakes in US/Canada.",
   "repository": {
     "url": "https://github.com/Sweeppea-Development-Lab/sweeppea-mcp-info",
     "source": "github"
   },
-  "version": "1.18.0",
+  "version": "1.22.0",
   "remotes": [
     {
       "type": "streamable-http",
