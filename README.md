@@ -11,8 +11,8 @@
 **Model Context Protocol for Sweepstakes Management**
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
-![Server Version](https://img.shields.io/badge/Server-v1.22.0-green)
-![Tools](https://img.shields.io/badge/Tools-109-orange)
+![Server Version](https://img.shields.io/badge/Server-v1.23.0-green)
+![Tools](https://img.shields.io/badge/Tools-116-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
@@ -74,7 +74,7 @@ A rejection returns a structured payload so your AI assistant can recover:
 
 `rule_id` is only present for dynamic rules. The AI assistant can read these fields and adjust the arguments before retrying.
 
-Irreversible tools — every `delete_*`, plus `send_message`, `send_code`, `cancel_campaign`, `remove_suppression` and `unassign_code` — require `confirm: true` and are rejected without it.
+Irreversible tools — every `delete_*`, plus `send_message`, `send_code`, `cancel_campaign`, `remove_suppression`, `unassign_code` and `remove_drip_contact` — require `confirm: true` and are rejected without it.
 
 ---
 
@@ -93,7 +93,7 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 
 ---
 
-## Available Tools (109)
+## Available Tools (116)
 
 ### Account Tools (4)
 
@@ -293,6 +293,22 @@ See [Platform Setup](#platform-setup) for Claude Desktop, Cursor, Windsurf, GitH
 | `add_suppressions` | Suppress up to 500 email addresses or phone numbers. Never downgrades an existing opt-out |
 | `remove_suppression` | Remove a manually added suppression. Opt-outs, STOP replies and complaints are never removable. Requires `confirm: true` |
 | `send_message` | Send a plain-text message by email and/or SMS to a participant of your account. Cannot be recalled. Requires `confirm: true` |
+
+### Drip Campaigns Tools (7)
+
+> Reads require the **Drip Marketing module**. Writes (`pause_drip`, `resume_drip`, `remove_drip_contact`) require **Drip Marketing and Send Message** — each missing module returns its own 403. This gate is documented by the API, not yet observed.
+>
+> Drips are created, edited, activated and deleted only in the Sweeppea app, by design — the API has no endpoints for them. These tools read drips, pause and resume them, and remove a single contact.
+
+| Tool | Description |
+|------|-------------|
+| `fetch_drips` | List automated email/SMS sequences, with `can_run` (whether the plan lets drips run) and the plan limit |
+| `get_drip` | Get one drip in full: every step with its delay and content, audience summary and sending settings |
+| `fetch_drip_report` | Get drip statistics per step, in total, day by day and clicked links, over 7, 30, 90 or 180 days |
+| `fetch_drip_enrollments` | List enrolled contacts: position in the sequence, next scheduled step and exit reason |
+| `pause_drip` | Pause an active drip: no new enrollments and no steps go out until resumed |
+| `resume_drip` | Resume a paused drip that was not edited since. Refusals explain the cause |
+| `remove_drip_contact` | Remove one contact from a drip. Permanent — that drip never enrolls them again. Requires `confirm: true` |
 
 ### Documentation Tools (1)
 
