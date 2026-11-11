@@ -31,7 +31,7 @@ Consequence: "add a tool" here means *documenting* a tool that already exists up
 ## Commands
 
 ```bash
-npm install          # only dep: @modelcontextprotocol/sdk
+npm ci               # deps: @modelcontextprotocol/sdk, zod (pinned by package-lock.json)
 npm start            # runs the stdio wrapper (node index.js)
 docker build -t sweeppea-mcp .
 ```
