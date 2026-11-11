@@ -1,6 +1,6 @@
 {
   "name": "sweeppea-mcp",
-  "version": "1.23.0",
+  "version": "1.23.2",
   "description": "Official MCP server for sweepstakes management. 116 tools across 21 categories for legally compliant sweepstakes in the US and Canada.",
   "main": "index.js",
   "type": "module",
