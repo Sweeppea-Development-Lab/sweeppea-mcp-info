@@ -7,7 +7,7 @@
     "url": "https://github.com/Sweeppea-Development-Lab/sweeppea-mcp-info",
     "source": "github"
   },
-  "version": "1.23.0",
+  "version": "1.23.2",
   "remotes": [
     {
       "type": "streamable-http",

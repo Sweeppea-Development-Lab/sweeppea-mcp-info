@@ -11,7 +11,7 @@
 **Model Context Protocol for Sweepstakes Management**
 
 ![MCP Protocol](https://img.shields.io/badge/MCP_Protocol-2025--11--25-blue)
-![Server Version](https://img.shields.io/badge/Server-v1.23.0-green)
+![Server Version](https://img.shields.io/badge/Server-v1.23.2-green)
 ![Tools](https://img.shields.io/badge/Tools-116-orange)
 ![Transport](https://img.shields.io/badge/Transport-Streamable_HTTP-purple)
 ![License](https://img.shields.io/badge/License-MIT-yellow)

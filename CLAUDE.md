@@ -23,7 +23,7 @@ What this repo actually ships:
 
 - `README.md` — the public catalog: tool tables, per-platform setup guides, protocol table, badges. This is the primary deliverable and what most changes touch.
 - `index.js` — a tiny **stdio wrapper** exposing a single local tool, `sweeppea_connect`, that just returns the remote endpoint + config JSON for a given client platform. It exists so registries (Glama, the official MCP registry) and `docker run` have something executable to list; it never calls the Sweeppea API.
-- `server.json` — manifest for the official MCP registry (`mcp-publisher`). Untracked in git.
+- `server.json` — manifest for the official MCP registry (`mcp-publisher`). Tracked in git.
 - `glama.json`, `Dockerfile` — registry/container metadata for `index.js`.
 
 Consequence: "add a tool" here means *documenting* a tool that already exists upstream, never implementing one.
@@ -66,7 +66,7 @@ Version and tool count are duplicated across files with no single source. A rele
 Then run the grep gate with the *previous* values and fix anything it returns:
 
 ```bash
-OLD_VER=1.23.0; OLD_COUNT=116
+OLD_VER=1.23.2; OLD_COUNT=116
 grep -rnE "v?${OLD_VER}|${OLD_COUNT} tools" \
   --include='*.md' --include='*.json' --include='*.js' \
   --exclude-dir=node_modules --exclude-dir=.git .
@@ -74,7 +74,7 @@ grep -rnE "v?${OLD_VER}|${OLD_COUNT} tools" \
 
 Category counts in the README must sum to the headline number, and the category list in `index.js` must match the README's `###` sections (currently 21).
 
-`server.json` is untracked, so it silently misses releases — it sat at `1.14.0` / `63 tools` for four versions. Check it explicitly on every bump.
+`server.json` is tracked in git now, but nothing in the build or the GitHub release reads it, so it can still miss a bump silently — it sat at `1.14.0` / `63 tools` for four versions while untracked. Check it explicitly on every bump.
 
 ## Release flow
 
