@@ -4,99 +4,51 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this repo is (and is not)
 
-This is the **public info / distribution manifest** for the Sweeppea MCP Server — not the server itself.
+This is the **public information** about the Sweeppea MCP Server — not the server itself. Its only job is to stay current with upstream.
 
 The real server is **remote and hosted**: `https://mcp.sweeppea.com/` (Streamable HTTP, Bearer auth, MCP protocol `2025-11-25`). Its 116 tools proxy the Sweeppea API v3 and its implementation lives in a **different repository** (`renaissance-mcp`, sibling directory `../renaissance-mcp`). Nothing you change here alters the behavior of those 116 tools.
 
-To resync after an upstream release, read `../renaissance-mcp/CHANGELOG.md` and `package.json` for the version and counts, then diff the tool names instead of trusting the changelog prose:
+To resync after an upstream release, read the version and the CHANGELOG entry from `origin/main` of `../renaissance-mcp` (the local checkout may sit on another branch), then diff the tool names instead of trusting the changelog prose:
 
 ```bash
-grep -oE '^#### [a-z_]+' ../renaissance-mcp/README.md | sed 's/#### //' | sort -u > /tmp/up.txt
+git -C ../renaissance-mcp fetch -q origin
+git -C ../renaissance-mcp show origin/main:README.md | grep -oE '^#### [a-z_]+' | sed 's/#### //' | sort -u > /tmp/up.txt
 grep -oE '^\| `[a-z_]+`' README.md | tr -d '|` ' | sort -u > /tmp/here.txt
 comm -23 /tmp/up.txt /tmp/here.txt   # new upstream, missing here
 comm -13 /tmp/up.txt /tmp/here.txt   # here but gone upstream — must be removed
 ```
 
-The authoritative count is `find ../renaissance-mcp/src/tools -name '*Tool.js' | wc -l` **minus one** (`BaseSweeppeaTool.js` is not a tool).
+The authoritative count is the number of `*Tool.js` files under `src/tools/` **minus one** (`BaseSweeppeaTool.js` is not a tool). Categories are the directories under `src/tools/sweeppea/` plus `core/` (Testing).
 
-What this repo actually ships:
-
-- `README.md` — the public catalog: tool tables, per-platform setup guides, protocol table, badges. This is the primary deliverable and what most changes touch.
-- `index.js` — a tiny **stdio wrapper** exposing a single local tool, `sweeppea_connect`, that just returns the remote endpoint + config JSON for a given client platform. It exists so registries (Glama, the official MCP registry) and `docker run` have something executable to list; it never calls the Sweeppea API.
-- `server.json` — manifest for the official MCP registry (`mcp-publisher`). Tracked in git.
-- `glama.json`, `Dockerfile` — registry/container metadata for `index.js`.
+What this repo ships: `README.md` (the public catalog: tool tables, module notes, server-side validations, per-platform setup guides, badges), `LICENSE`, and `.mcp.json` (a sample client config with a placeholder key).
 
 Consequence: "add a tool" here means *documenting* a tool that already exists upstream, never implementing one.
 
-## Commands
-
-```bash
-npm ci               # deps: @modelcontextprotocol/sdk, zod (pinned by package-lock.json)
-npm start            # runs the stdio wrapper (node index.js)
-docker build -t sweeppea-mcp .
-```
-
-There is no test suite, linter, or build step. To smoke-test the wrapper, drive it over stdio:
-
-```bash
-printf '%s\n' \
-  '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"protocolVersion":"2025-06-18","capabilities":{},"clientInfo":{"name":"probe","version":"1"}}}' \
-  '{"jsonrpc":"2.0","method":"notifications/initialized"}' \
-  '{"jsonrpc":"2.0","id":2,"method":"tools/list","params":{}}' \
-  | node index.js
-```
-
-### Tool schemas in `index.js`
-
-Declare tool arguments as a Zod raw shape (`{ platform: z.enum([...]).optional() }`), never as a JSON-Schema object. With SDK `1.26.0` a raw object was silently parsed as tool **annotations** (`platform` vanished from `inputSchema`); from SDK `1.30.0` on, startup throws `Tool sweeppea_connect expected a Zod schema or ToolAnnotations`. `zod` is a direct dependency for this reason.
+There used to be a stdio wrapper (`index.js`), a `Dockerfile`, `glama.json` and `server.json` for Glama and the official MCP registry. They were removed on 2026-11-11: distribution is no longer a goal. Do not bring them back unless asked.
 
 ## Version / count sync (mandatory before any commit)
 
-Version and tool count are duplicated across files with no single source. A release that updates one and not the others has shipped before. Update **all** of these in the same commit:
+Everything lives in `README.md`. On every upstream release, update:
 
-| File | What to update |
-|---|---|
-| `package.json` | `version`, and the tool count in `description` |
-| `index.js` | `new McpServer({ version })`, the tool count inside the `sweeppea_connect` **description string**, and the `"116 tools across 21 categories:"` + category list in the returned text |
-| `README.md` | `Server-v1.X.Y` and `Tools-NN` badges, the `## Available Tools (NN)` heading, every `### Category (N)` count, and the tool table rows |
-| `server.json` | `version` and `description` tool count |
+- the `Server-v1.X.Y` and `Tools-NN` badges
+- the `## Available Tools (NN)` heading
+- every `### Category Tools (N)` count, and the tool table rows
+- the module notes and the "Server-side Validations" section when upstream changed them
 
-`Dockerfile`, `glama.json` and `LICENSE` carry no version.
-
-Then run the grep gate with the *previous* values and fix anything it returns:
+Category counts must sum to the headline number. Then grep for the previous version; outside release history it must return nothing:
 
 ```bash
-OLD_VER=1.23.2; OLD_COUNT=116
-grep -rnE "v?${OLD_VER}|${OLD_COUNT} tools" \
-  --include='*.md' --include='*.json' --include='*.js' \
-  --exclude-dir=node_modules --exclude-dir=.git .
+OLD_VER=1.23.2
+grep -nE "v?${OLD_VER}" README.md
 ```
-
-Category counts in the README must sum to the headline number, and the category list in `index.js` must match the README's `###` sections (currently 21).
-
-`server.json` is tracked in git now, but nothing in the build or the GitHub release reads it, so it can still miss a bump silently — it sat at `1.14.0` / `63 tools` for four versions while untracked. Check it explicitly on every bump.
 
 ## Release flow
 
-Commits go on a branch (`feat/…`, `fix/…`, `docs/…`), never straight to `main`. A release is **three separate artifacts** — cutting one does not cut the others, and skipping the third is how `server.json` drifted five versions:
+Commits go on a branch (`feat/…`, `fix/…`, `docs/…`), never straight to `main`. After the merge, tag and cut a GitHub release, so the public history shows what changed in each MCP version:
 
 ```bash
-# 1. tag — immutable anchor
 git tag v1.X.Y && git push origin v1.X.Y
-
-# 2. GitHub release — this is what Glama reads to regenerate Quality/Security scores
 gh release create v1.X.Y --title "v1.X.Y — <short summary>" --notes "..."
-
-# 3. official MCP registry — reads server.json, NOT the release
-mcp-publisher validate && mcp-publisher publish
-```
-
-`mcp-publisher login github` is an interactive device flow — ask the user to run it with `!`. Token storage lives in `~/.config/mcp-publisher/`; the `.mcpregistry_*` files in the repo root are stale leftovers from an older CLI version and are no longer read.
-
-Verify the third step actually landed instead of assuming it did:
-
-```bash
-curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=sweeppea"
 ```
 
 ## Never invent tools or behavior
@@ -104,7 +56,3 @@ curl -s "https://registry.modelcontextprotocol.io/v0/servers?search=sweeppea"
 Every tool name, description, parameter and count in `README.md` must come from the upstream `renaissance-mcp` source or from a live response of `https://mcp.sweeppea.com/`. This is a public, customer-facing catalog. Commit `97ed27d` ("remove invented Winners tools") is what happens otherwise. If you cannot verify a tool exists, leave it out and say so.
 
 The same applies to the "Server-side Validations" section: only document guardrails and `error_code` values that exist upstream.
-
-## Secrets
-
-`.mcpregistry_github_token` and `.mcpregistry_registry_token` (written by `mcp-publisher login`) sit in the repo root and are **not covered by `.gitignore`**. Never `git add -A` here — stage files explicitly, or add them to `.gitignore` first.
